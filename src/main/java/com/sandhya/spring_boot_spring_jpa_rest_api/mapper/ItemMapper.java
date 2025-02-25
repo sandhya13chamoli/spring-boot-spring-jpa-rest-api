@@ -1,6 +1,8 @@
 package com.sandhya.spring_boot_spring_jpa_rest_api.mapper;
 
 import com.sandhya.spring_boot_spring_jpa_rest_api.domain.entity.Item;
+import com.sandhya.spring_boot_spring_jpa_rest_api.domain.request.ItemCreateRequest;
+import com.sandhya.spring_boot_spring_jpa_rest_api.domain.request.ItemUpdateRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -8,7 +10,7 @@ import java.util.Date;
 @Component
 public class ItemMapper {
 
-    public Item mapItemCreateRequest(Item item) {
+    public Item mapItemCreateRequest(ItemCreateRequest item) {
         return Item.builder()
                 .itemName(item.getItemName())
                 .lastModifiedUser(item.getLastModifiedUser())
@@ -17,7 +19,7 @@ public class ItemMapper {
                 .build();
     }
 
-    public Item mapItemUpdateRequest(Item itemFromDB, Item item) {
+    public Item mapItemUpdateRequest(Item itemFromDB, ItemUpdateRequest item) {
         return Item.builder()
                 .id(itemFromDB.getId())
                 .itemName(item.getItemName())

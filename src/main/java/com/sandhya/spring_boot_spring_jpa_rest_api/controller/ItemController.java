@@ -1,6 +1,8 @@
 package com.sandhya.spring_boot_spring_jpa_rest_api.controller;
 
 import com.sandhya.spring_boot_spring_jpa_rest_api.domain.entity.Item;
+import com.sandhya.spring_boot_spring_jpa_rest_api.domain.request.ItemCreateRequest;
+import com.sandhya.spring_boot_spring_jpa_rest_api.domain.request.ItemUpdateRequest;
 import com.sandhya.spring_boot_spring_jpa_rest_api.mapper.ItemMapper;
 import com.sandhya.spring_boot_spring_jpa_rest_api.services.interfaceClasses.IItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +26,13 @@ public class ItemController {
     private ItemMapper itemMapper;
 
     @RequestMapping(method = RequestMethod.POST)
-    public Item createItem(@RequestBody Item item) {
+    public Item createItem(@RequestBody ItemCreateRequest item) {
         Item mappedItem = itemMapper.mapItemCreateRequest(item);
         return iItemService.createItem(mappedItem);
     }
 
     @RequestMapping(method=RequestMethod.PATCH, value = "/{id}")
-    public Item updateItem(@PathVariable String id, @RequestBody Item item) {
+    public Item updateItem(@PathVariable String id, @RequestBody ItemUpdateRequest item) {
         Item itemFromDB = iItemService.getItemById(id);
         Item mappedItem = itemMapper.mapItemUpdateRequest(itemFromDB, item);
         return iItemService.updateItem(mappedItem);
@@ -43,7 +45,6 @@ public class ItemController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Item> getItemsByItemName(@RequestParam String itemName) {
-
         return iItemService.getItemsByItemName(itemName);
     }
 }
