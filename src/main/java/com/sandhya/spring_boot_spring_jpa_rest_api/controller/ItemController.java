@@ -6,6 +6,8 @@ import com.sandhya.spring_boot_spring_jpa_rest_api.domain.request.ItemUpdateRequ
 import com.sandhya.spring_boot_spring_jpa_rest_api.mapper.ItemMapper;
 import com.sandhya.spring_boot_spring_jpa_rest_api.services.interfaceClasses.IItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,25 +28,25 @@ public class ItemController {
     private ItemMapper itemMapper;
 
     @RequestMapping(method = RequestMethod.POST)
-    public Item createItem(@RequestBody ItemCreateRequest item) {
+    public ResponseEntity<Item> createItem(@RequestBody ItemCreateRequest item) {
         Item mappedItem = itemMapper.mapItemCreateRequest(item);
-        return iItemService.createItem(mappedItem);
+        return new ResponseEntity<>(iItemService.createItem(mappedItem), HttpStatus.CREATED);
     }
 
     @RequestMapping(method=RequestMethod.PATCH, value = "/{id}")
-    public Item updateItem(@PathVariable String id, @RequestBody ItemUpdateRequest item) {
+    public ResponseEntity<Item> updateItem(@PathVariable String id, @RequestBody ItemUpdateRequest item) {
         Item itemFromDB = iItemService.getItemById(id);
         Item mappedItem = itemMapper.mapItemUpdateRequest(itemFromDB, item);
-        return iItemService.updateItem(mappedItem);
+        return new ResponseEntity<>(iItemService.updateItem(mappedItem), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
-    public Item getItemById(@PathVariable String id) {
-        return iItemService.getItemById(id);
+    public ResponseEntity<Item> getItemById(@PathVariable String id) {
+        return new ResponseEntity<>(iItemService.getItemById(id), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Item> getItemsByItemName(@RequestParam String itemName) {
-        return iItemService.getItemsByItemName(itemName);
+    public ResponseEntity<List<Item>> getItemsByItemName(@RequestParam String itemName) {
+        return new ResponseEntity<>(iItemService.getItemsByItemName(itemName), HttpStatus.OK);
     }
 }
